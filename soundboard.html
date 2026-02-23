@@ -155,12 +155,18 @@
     <button id="btn-monkey2" class="btn btn-jump" onclick="toggleSound('monkey2')">
       <span>🐒</span>Monkey 2
     </button>
+    <button id="btn-frogs" class="btn btn-jump" onclick="toggleSound('frogs')">
+      <span>🐸</span>Frogs
+    </button>
     
     <button id="btn-lion1" class="btn btn-freeze" onclick="toggleSound('lion1')">
       <span>🦁</span>Lion 1
     </button>
     <button id="btn-lion2" class="btn btn-freeze" onclick="toggleSound('lion2')">
       <span>🦁</span>Lion 2
+    </button>
+    <button id="btn-eagle" class="btn btn-freeze" onclick="toggleSound('eagle')">
+      <span>🦅</span>Eagle
     </button>
     
     <button id="btn-thunder" class="btn btn-huddle" onclick="toggleSound('thunder')">
@@ -178,15 +184,17 @@
   <audio id="cat2" src="cute-cat-meow-472372.mp3" loop></audio>
   <audio id="monkey1" src="monkey-laugh.mp3" loop></audio>
   <audio id="monkey2" src="monkey-laugh2.mp3" loop></audio>
+  <audio id="frogs" src="frogs-croaking-329854.mp3" loop></audio>
   <audio id="lion1" src="lion-roaring-sound-effect-440951.mp3" loop></audio>
   <audio id="lion2" src="pwlpl-powerful-lion-roar-sound-effect-high-quality-sfx-444190.mp3" loop></audio>
+  <audio id="eagle" src="eagle-355831.mp3" loop></audio>
   <audio id="thunder" src="thunder-sound-375727.mp3" loop></audio>
 
 <script>
   const allSounds = [
     'brook', 'jungle', 
-    'cat1', 'cat2', 'monkey1', 'monkey2', 
-    'lion1', 'lion2', 
+    'cat1', 'cat2', 'monkey1', 'monkey2', 'frogs',
+    'lion1', 'lion2', 'eagle',
     'thunder'
   ];
 
