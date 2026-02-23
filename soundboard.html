@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>The White Rabbit's Journey</title>
+<style>
+  :root {
+    --bg-color: #121212;
+    --card-bg: #1e1e1e;
+    --text-main: #ffffff;
+    --text-muted: #a0a0a0;
+    --walk: #2980b9;
+    --jump: #27ae60;
+    --freeze: #c0392b;
+    --huddle: #8e44ad;
+    --stop: #c0392b;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow-x: hidden;
+  }
+
+  header {
+    text-align: center;
+    padding: 15px 10px;
+    background-color: var(--card-bg);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 22px;
+    letter-spacing: 1px;
+  }
+
+  .section-title {
+    font-size: 14px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin: 15px 15px 5px 15px;
+    letter-spacing: 1px;
+  }
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 0 15px;
+  }
+
+  .btn {
+    border: none;
+    border-radius: 16px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    padding: 18px 10px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: transform 0.1s, filter 0.2s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .btn:active {
+    transform: scale(0.95);
+  }
+
+  .btn span {
+    font-size: 24px;
+    margin-bottom: 5px;
+  }
+
+  /* Specific Button Colors */
+  .btn-bg { background: linear-gradient(135deg, #34495e, #2c3e50); border: 2px solid transparent; }
+  .btn-bg.playing { border: 2px solid #00d2ff; background: linear-gradient(135deg, #2980b9, #2c3e50); box-shadow: 0 0 15px rgba(0, 210, 255, 0.4); }
+  .btn-jump { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+  .btn-freeze { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+  .btn-huddle { background: linear-gradient(135deg, #9b59b6, #8e44ad); grid-column: span 2; }
+  
+  .stop-container {
+    padding: 15px;
+    margin-top: auto;
+  }
+
+  #btn-stop-all {
+    width: 100%;
+    background: transparent;
+    color: var(--stop);
+    border: 2px solid var(--stop);
+    font-size: 18px;
+    padding: 15px;
+    border-radius: 16px;
+  }
+
+  #btn-stop-all:active {
+    background: rgba(192, 57, 43, 0.2);
+  }
+
+  footer {
+    text-align: center;
+    padding: 15px;
+    font-size: 12px;
+    color: var(--text-muted);
+    background-color: var(--card-bg);
+    border-top: 1px solid #333;
+  }
+
+  .dev-name {
+    color: #00d2ff;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+  <header>
+    <h1>The White Rabbit's Journey</h1>
+  </header>
+
+  <div class="section-title">Background Ambience (Looping)</div>
+  <div class="grid-container">
+    <button id="btn-brook" class="btn btn-bg" onclick="toggleBg('brook')">
+      <span>🌊</span><div id="text-brook">Play Brook</div>
+    </button>
+    <button id="btn-jungle" class="btn btn-bg" onclick="toggleBg('jungle')">
+      <span>🌿</span><div id="text-jungle">Play Jungle</div>
+    </button>
+  </div>
+
+  <div class="section-title">Action Sounds (Triggers)</div>
+  <div class="grid-container">
+    <button class="btn btn-jump" onclick="playFg('cat1')"><span>🐈</span>Cat 1</button>
+    <button class="btn btn-jump" onclick="playFg('cat2')"><span>🐈</span>Cat 2</button>
+    <button class="btn btn-jump" onclick="playFg('monkey1')"><span>🐒</span>Monkey 1</button>
+    <button class="btn btn-jump" onclick="playFg('monkey2')"><span>🐒</span>Monkey 2</button>
+    
+    <button class="btn btn-freeze" onclick="playFg('lion1')"><span>🦁</span>Lion 1</button>
+    <button class="btn btn-freeze" onclick="playFg('lion2')"><span>🦁</span>Lion 2</button>
+    
+    <button class="btn btn-huddle" onclick="playFg('thunder')"><span>⛈️</span>Thunder (Huddle)</button>
+  </div>
+
+  <div class="stop-container">
+    <button id="btn-stop-all" class="btn" onclick="stopAll()">🛑 STOP ALL AUDIO</button>
+  </div>
+
+  <footer>
+    Developed by <br>
+    <span class="dev-name">Midhun T V</span><br>
+    Master Trainer, KITE Kasaragod
+  </footer>
+
+  <audio id="brook" src="Small brook water.mp3" loop></audio>
+  <audio id="jungle" src="jungle-ambience-339096.mp3" loop></audio>
+  
+  <audio id="cat1" src="cat-meow-401729.mp3" loop></audio>
+  <audio id="cat2" src="cute-cat-meow-472372.mp3" loop></audio>
+  <audio id="monkey1" src="monkey-laugh.mp3" loop></audio>
+  <audio id="monkey2" src="monkey-laugh2.mp3" loop></audio>
+  <audio id="lion1" src="lion-roaring-sound-effect-440951.mp3" loop></audio>
+  <audio id="lion2" src="pwlpl-powerful-lion-roar-sound-effect-high-quality-sfx-444190.mp3" loop></audio>
+  <audio id="thunder" src="thunder-sound-375727.mp3" loop></audio>
+
+<script>
+  const bgSounds = ['brook', 'jungle'];
+  const fgSounds = ['cat1', 'cat2', 'monkey1', 'monkey2', 'lion1', 'lion2', 'thunder'];
+
+  // Toggle background sounds on/off without affecting other sounds
+  function toggleBg(id) {
+    const audio = document.getElementById(id);
+    const btn = document.getElementById('btn-' + id);
+    const text = document.getElementById('text-' + id);
+    const name = id.charAt(0).toUpperCase() + id.slice(1);
+
+    if (audio.paused) {
+      audio.play();
+      btn.classList.add('playing');
+      text.innerText = "Stop " + name;
+    } else {
+      audio.pause();
+      btn.classList.remove('playing');
+      text.innerText = "Play " + name;
+    }
+  }
+
+  // Play foreground sounds (stops other foreground sounds, leaves BG alone)
+  function playFg(id) {
+    // Stop all currently playing foreground sounds
+    fgSounds.forEach(snd => {
+      const audio = document.getElementById(snd);
+      audio.pause();
+      audio.currentTime = 0;
+    });
+    
+    // Play the newly clicked sound
+    const newAudio = document.getElementById(id);
+    newAudio.play();
+  }
+
+  // Master Stop button logic
+  function stopAll() {
+    // Stop BG sounds and reset buttons
+    bgSounds.forEach(id => {
+      const audio = document.getElementById(id);
+      audio.pause();
+      audio.currentTime = 0;
+      
+      const btn = document.getElementById('btn-' + id);
+      const text = document.getElementById('text-' + id);
+      const name = id.charAt(0).toUpperCase() + id.slice(1);
+      btn.classList.remove('playing');
+      text.innerText = "Play " + name;
+    });
+
+    // Stop FG sounds
+    fgSounds.forEach(id => {
+      const audio = document.getElementById(id);
+      audio.pause();
+      audio.currentTime = 0;
+    });
+  }
+</script>
+</body>
+</html>
