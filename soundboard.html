@@ -10,11 +10,6 @@
     --card-bg: #1e1e1e;
     --text-main: #ffffff;
     --text-muted: #a0a0a0;
-    --walk: #2980b9;
-    --jump: #27ae60;
-    --freeze: #c0392b;
-    --huddle: #8e44ad;
-    --stop: #c0392b;
   }
 
   body {
@@ -42,23 +37,15 @@
     letter-spacing: 1px;
   }
 
-  .section-title {
-    font-size: 14px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    margin: 15px 15px 5px 15px;
-    letter-spacing: 1px;
-  }
-
   .grid-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
-    padding: 0 15px;
+    padding: 15px;
   }
 
   .btn {
-    border: none;
+    border: 2px solid transparent; /* Prevents layout jump on active state */
     border-radius: 16px;
     font-size: 16px;
     font-weight: bold;
@@ -76,39 +63,48 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  .btn:active {
-    transform: scale(0.95);
-  }
-
   .btn span {
     font-size: 24px;
     margin-bottom: 5px;
   }
 
   /* Specific Button Colors */
-  .btn-bg { background: linear-gradient(135deg, #34495e, #2c3e50); border: 2px solid transparent; }
-  .btn-bg.playing { border: 2px solid #00d2ff; background: linear-gradient(135deg, #2980b9, #2c3e50); box-shadow: 0 0 15px rgba(0, 210, 255, 0.4); }
+  .btn-bg { background: linear-gradient(135deg, #34495e, #2c3e50); }
   .btn-jump { background: linear-gradient(135deg, #2ecc71, #27ae60); }
   .btn-freeze { background: linear-gradient(135deg, #e74c3c, #c0392b); }
   .btn-huddle { background: linear-gradient(135deg, #9b59b6, #8e44ad); grid-column: span 2; }
-  
+
+  /* The Active/Playing Animation */
+  @keyframes pulse-glow {
+    0% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.4); transform: scale(0.98); }
+    50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.9); transform: scale(1.02); }
+    100% { box-shadow: 0 0 5px rgba(255, 255, 255, 0.4); transform: scale(0.98); }
+  }
+
+  .playing {
+    animation: pulse-glow 1.5s infinite;
+    border: 2px solid #ffffff;
+    filter: brightness(1.2);
+    z-index: 10;
+  }
+
   .stop-container {
-    padding: 15px;
+    padding: 0 15px 15px 15px;
     margin-top: auto;
   }
 
   #btn-stop-all {
     width: 100%;
     background: transparent;
-    color: var(--stop);
-    border: 2px solid var(--stop);
+    color: #e74c3c;
+    border: 2px solid #e74c3c;
     font-size: 18px;
     padding: 15px;
     border-radius: 16px;
   }
 
   #btn-stop-all:active {
-    background: rgba(192, 57, 43, 0.2);
+    background: rgba(231, 76, 60, 0.2);
   }
 
   footer {
@@ -132,27 +128,37 @@
     <h1>The White Rabbit's Journey</h1>
   </header>
 
-  <div class="section-title">Background Ambience (Looping)</div>
   <div class="grid-container">
-    <button id="btn-brook" class="btn btn-bg" onclick="toggleBg('brook')">
-      <span>🌊</span><div id="text-brook">Play Brook</div>
+    <button id="btn-brook" class="btn btn-bg" onclick="toggleSound('brook')">
+      <span>🌊</span>Brook
     </button>
-    <button id="btn-jungle" class="btn btn-bg" onclick="toggleBg('jungle')">
-      <span>🌿</span><div id="text-jungle">Play Jungle</div>
+    <button id="btn-jungle" class="btn btn-bg" onclick="toggleSound('jungle')">
+      <span>🌿</span>Jungle
     </button>
-  </div>
 
-  <div class="section-title">Action Sounds (Triggers)</div>
-  <div class="grid-container">
-    <button class="btn btn-jump" onclick="playFg('cat1')"><span>🐈</span>Cat 1</button>
-    <button class="btn btn-jump" onclick="playFg('cat2')"><span>🐈</span>Cat 2</button>
-    <button class="btn btn-jump" onclick="playFg('monkey1')"><span>🐒</span>Monkey 1</button>
-    <button class="btn btn-jump" onclick="playFg('monkey2')"><span>🐒</span>Monkey 2</button>
+    <button id="btn-cat1" class="btn btn-jump" onclick="toggleSound('cat1')">
+      <span>🐈</span>Cat 1
+    </button>
+    <button id="btn-cat2" class="btn btn-jump" onclick="toggleSound('cat2')">
+      <span>🐈</span>Cat 2
+    </button>
+    <button id="btn-monkey1" class="btn btn-jump" onclick="toggleSound('monkey1')">
+      <span>🐒</span>Monkey 1
+    </button>
+    <button id="btn-monkey2" class="btn btn-jump" onclick="toggleSound('monkey2')">
+      <span>🐒</span>Monkey 2
+    </button>
     
-    <button class="btn btn-freeze" onclick="playFg('lion1')"><span>🦁</span>Lion 1</button>
-    <button class="btn btn-freeze" onclick="playFg('lion2')"><span>🦁</span>Lion 2</button>
+    <button id="btn-lion1" class="btn btn-freeze" onclick="toggleSound('lion1')">
+      <span>🦁</span>Lion 1
+    </button>
+    <button id="btn-lion2" class="btn btn-freeze" onclick="toggleSound('lion2')">
+      <span>🦁</span>Lion 2
+    </button>
     
-    <button class="btn btn-huddle" onclick="playFg('thunder')"><span>⛈️</span>Thunder (Huddle)</button>
+    <button id="btn-thunder" class="btn btn-huddle" onclick="toggleSound('thunder')">
+      <span>⛈️</span>Thunder
+    </button>
   </div>
 
   <div class="stop-container">
@@ -167,7 +173,6 @@
 
   <audio id="brook" src="Small brook water.mp3" loop></audio>
   <audio id="jungle" src="jungle-ambience-339096.mp3" loop></audio>
-  
   <audio id="cat1" src="cat-meow-401729.mp3" loop></audio>
   <audio id="cat2" src="cute-cat-meow-472372.mp3" loop></audio>
   <audio id="monkey1" src="monkey-laugh.mp3" loop></audio>
@@ -177,61 +182,39 @@
   <audio id="thunder" src="thunder-sound-375727.mp3" loop></audio>
 
 <script>
-  const bgSounds = ['brook', 'jungle'];
-  const fgSounds = ['cat1', 'cat2', 'monkey1', 'monkey2', 'lion1', 'lion2', 'thunder'];
+  const allSounds = [
+    'brook', 'jungle', 
+    'cat1', 'cat2', 'monkey1', 'monkey2', 
+    'lion1', 'lion2', 
+    'thunder'
+  ];
 
-  // Toggle background sounds on/off without affecting other sounds
-  function toggleBg(id) {
+  // Independent toggle for every button
+  function toggleSound(id) {
     const audio = document.getElementById(id);
     const btn = document.getElementById('btn-' + id);
-    const text = document.getElementById('text-' + id);
-    const name = id.charAt(0).toUpperCase() + id.slice(1);
 
     if (audio.paused) {
       audio.play();
       btn.classList.add('playing');
-      text.innerText = "Stop " + name;
     } else {
       audio.pause();
+      audio.currentTime = 0; // Rewind to start
       btn.classList.remove('playing');
-      text.innerText = "Play " + name;
     }
   }
 
-  // Play foreground sounds (stops other foreground sounds, leaves BG alone)
-  function playFg(id) {
-    // Stop all currently playing foreground sounds
-    fgSounds.forEach(snd => {
-      const audio = document.getElementById(snd);
-      audio.pause();
-      audio.currentTime = 0;
-    });
-    
-    // Play the newly clicked sound
-    const newAudio = document.getElementById(id);
-    newAudio.play();
-  }
-
-  // Master Stop button logic
+  // Master kill switch
   function stopAll() {
-    // Stop BG sounds and reset buttons
-    bgSounds.forEach(id => {
+    allSounds.forEach(id => {
       const audio = document.getElementById(id);
-      audio.pause();
-      audio.currentTime = 0;
-      
       const btn = document.getElementById('btn-' + id);
-      const text = document.getElementById('text-' + id);
-      const name = id.charAt(0).toUpperCase() + id.slice(1);
-      btn.classList.remove('playing');
-      text.innerText = "Play " + name;
-    });
-
-    // Stop FG sounds
-    fgSounds.forEach(id => {
-      const audio = document.getElementById(id);
-      audio.pause();
-      audio.currentTime = 0;
+      
+      if (!audio.paused) {
+        audio.pause();
+        audio.currentTime = 0;
+        btn.classList.remove('playing');
+      }
     });
   }
 </script>
